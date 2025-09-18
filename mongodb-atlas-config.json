@@ -1,0 +1,17 @@
+{
+    "mongodbAtlasUri": "mongodb+srv://quaolo_db_user:<SP8c5btN0AEL9HcP>@cluster-cinema.gctahhz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-cinema",
+    "connectionOptions": {
+        "useNewUrlParser": true,
+        "useUnifiedTopology": true,
+        "retryWrites": true,
+        "w": "majority"
+    },
+    "databases": {
+        "movies": "movies",
+        "cinema_catalog": "cinema_catalog", 
+        "booking": "booking",
+        "payment": "payment",
+        "notifications": "notifications"
+    },
+    "updatedAt": "2025-09-11T10:31:23Z"
+}

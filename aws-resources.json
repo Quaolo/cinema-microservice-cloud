@@ -1,0 +1,24 @@
+{
+  "VpcId": "vpc-0b4a3a647ab1d9c4a",
+  "InternetGatewayId": "igw-0ff9ef57a94bad2a8",
+  "PublicSubnet1Id": "subnet-099e287ece6a3970c",
+  "PublicSubnet2Id": "subnet-0245de91875468fe1",
+  "PrivateSubnetId": "subnet-08d47c909c13e97bc",
+  "NatGatewayId": "nat-063f5482100a2abfd",
+  "NatEipId": "eipalloc-07cf015d8e8d9a2eb",
+  "SecurityGroupId": "sg-0267cca654266b1d8",
+  "LoadBalancerArn": "arn:aws:elasticloadbalancing:eu-west-1:634733903398:loadbalancer/app/cinema-alb/51660b99a182a26a",
+  "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-1:634733903398:targetgroup/cinema-api-tg/f5e42d6f0419c2e8",
+  "NamespaceId": "ns-l5loavo5tkx2whew",
+  "ClusterName": "cinema-cluster",
+  "ServiceDiscoveryARNs": {
+    "movies-service": "arn:aws:servicediscovery:eu-west-1:634733903398:service/srv-gfdgqjls5vaxc7pb",
+    "cinema-catalog-service": "arn:aws:servicediscovery:eu-west-1:634733903398:service/srv-zhh2tkbtr6yixp3s",
+    "booking-service": "arn:aws:servicediscovery:eu-west-1:634733903398:service/srv-igtkfdewbtrlesre",
+    "payment-service": "arn:aws:servicediscovery:eu-west-1:634733903398:service/srv-6ovnwxqsxcfzjp4z",
+    "notification-service": "arn:aws:servicediscovery:eu-west-1:634733903398:service/srv-7nqih55wce5c6hwz"
+  },
+  "S3Bucket": "cinema-posters-634733903398",
+  "CodePipelineRole": "arn:aws:iam::634733903398:role/cinema-codepipeline-role",
+  "CodePipelineArtifactBucket": "cinema-pipeline-artifacts-634733903398"
+}

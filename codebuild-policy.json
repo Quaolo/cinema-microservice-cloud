@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecr:*",
+        "ecs:*",
+        "elasticloadbalancing:*",
+        "iam:PassRole",
+        "iam:CreateRole",
+        "iam:AttachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListRolePolicies",
+        "s3:*",
+        "logs:*",
+        "cloudwatch:*",
+        "servicediscovery:*",
+        "route53:*",
+        "acm:*",
+        "ec2:*",
+        "vpc:*",
+        "elastic-ip:*",
+        "nat-gateway:*",
+        "internet-gateway:*",
+        "subnet:*",
+        "security-group:*",
+        "network-interface:*",
+        "route-table:*",
+        "vpc-endpoint:*",
+        "dhcp-options:*",
+        "network-acl:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:GetParametersByPath"
+      ],
+      "Resource": [
+        "arn:aws:ssm:*:*:parameter/cinema/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:*:*:secret:cinema/*"
+      ]
+    }
+  ]
+}
