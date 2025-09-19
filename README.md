@@ -121,10 +121,6 @@ CLEANUP=true bash deploy-cinema-aws.sh
 ### **Notification Service**
 - `GET /notifications` - Lista notifiche
 
-## Configurazione
-
-### **Variabili Ambiente Principali**
-
 # AWS
 
 ### **Porte Servizi**
