@@ -1494,6 +1494,17 @@ function cleanup_existing_cinema_vpcs {
         for vpc in $cinema_vpcs; do
             echo "  Cleaning up VPC: $vpc"
             
+            local nat_gateways=$(aws ec2 describe-nat-gateways --filter "Name=vpc-id,Values=$vpc" --region "$REGION" --query "NatGateways[?State!='deleted'].NatGatewayId" --output text 2>/dev/null || echo "")
+            if [ -n "$nat_gateways" ] && [ "$nat_gateways" != "None" ]; then
+                echo "    Deleting NAT Gateways..."
+                for nat_gateway in $nat_gateways; do
+                    echo "      Deleting NAT Gateway: $nat_gateway"
+                    aws ec2 delete-nat-gateway --nat-gateway-id "$nat_gateway" --region "$REGION" >/dev/null 2>&1
+                done
+                echo "    Waiting for NAT Gateways to be deleted..."
+                sleep 60
+            fi
+            
             local endpoint_ids=$(aws ec2 describe-vpc-endpoints --filters "Name=vpc-id,Values=$vpc" --region "$REGION" --query "VpcEndpoints[].VpcEndpointId" --output text 2>/dev/null || echo "")
             if [ -n "$endpoint_ids" ] && [ "$endpoint_ids" != "None" ]; then
                 echo "    Deleting VPC endpoints..."
@@ -1505,7 +1516,16 @@ function cleanup_existing_cinema_vpcs {
             
             local max_eni_retries=5
             local eni_retry_count=0
+            local eni_start_time=$(date +%s)
+            local eni_timeout=60  
+            
             while [ $eni_retry_count -lt $max_eni_retries ]; do
+                local current_time=$(date +%s)
+                local elapsed_time=$((current_time - eni_start_time))
+                if [ $elapsed_time -gt $eni_timeout ]; then
+                    echo "    TIMEOUT: ENI cleanup exceeded 5 minutes, proceeding..."
+                    break
+                fi
                 local enis=$(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[].NetworkInterfaceId' --output text --region "$REGION" 2>/dev/null || echo "")
                 if [ -n "$enis" ] && [ "$enis" != "None" ]; then
                     echo "    Deleting network interfaces (attempt $((eni_retry_count + 1))/$max_eni_retries)..."
@@ -1534,6 +1554,11 @@ function cleanup_existing_cinema_vpcs {
                     break
                 fi
             done
+            
+            if [ $eni_retry_count -eq $max_eni_retries ]; then
+                echo "    WARNING: Maximum ENI deletion retries reached. Some ENIs may still exist."
+                echo "    This is normal if they are managed by AWS services (NAT Gateway, Load Balancer, etc.)"
+            fi
             
             local remaining_enis=$(aws ec2 describe-network-interfaces --filters "Name=vpc-id,Values=$vpc" --query 'NetworkInterfaces[].NetworkInterfaceId' --output text --region "$REGION" 2>/dev/null || echo "")
             if [ -n "$remaining_enis" ] && [ "$remaining_enis" != "None" ]; then

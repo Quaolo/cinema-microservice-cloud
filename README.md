@@ -32,7 +32,6 @@ Questo progetto implementa un'architettura di microservizi completa per un siste
 - Policy pubblica per accesso diretto alle immagini
 
 ### **Gestione Pagamenti**
-- Integrazione **Stripe** per pagamenti
 - Logging completo delle transazioni
 - API per visualizzazione storico pagamenti
 
@@ -50,8 +49,8 @@ Questo progetto implementa un'architettura di microservizi completa per un siste
 
 ### **Backend**
 - **Node.js** + **Express.js**
-- **Mongoose** (MongoDB ODM)
-- **AWS SDK** (S3 integration)
+- **Mongoose** 
+- **AWS SDK**
 
 ### **Infrastructure**
 - **AWS ECS** (container orchestration)
@@ -127,13 +126,6 @@ CLEANUP=true bash deploy-cinema-aws.sh
 ### **Variabili Ambiente Principali**
 
 # AWS
-AWS_REGION=eu-west-1
-MOVIE_IMAGES_BUCKET=cinema-posters-ACCOUNT_ID
-
-# Stripe (opzionale)
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-```
 
 ### **Porte Servizi**
 - **API Gateway**: 8080
