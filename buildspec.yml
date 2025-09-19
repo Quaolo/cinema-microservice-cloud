@@ -40,11 +40,7 @@ phases:
     commands:
       - echo "Build & Deploy finished!"
       - echo "Checking deployment status..."
-      - |
-        if [ -f "aws-resources.json" ]; then
-          echo "Deployment resources:"
-          cat aws-resources.json
-        fi
+      - test -f aws-resources.json && echo "Deployment resources:" && cat aws-resources.json || echo "No aws-resources.json found"
       - echo "CI/CD pipeline completed successfully!"
 
 artifacts:
