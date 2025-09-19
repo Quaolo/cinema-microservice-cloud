@@ -14,8 +14,8 @@ phases:
     commands:
       - 'echo "Installing dependencies..."'
       - 'export DEBIAN_FRONTEND=noninteractive'
-      - 'apt-get update -y'
-      - 'apt-get install -y jq awscli'
+      - 'yum -y update'
+      - 'yum -y install jq awscli'
       - 'echo "Dependencies installed"'
   
   pre_build:
