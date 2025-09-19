@@ -45,12 +45,12 @@ phases:
 
 artifacts:
   files:
-    - "aws-resources.json"
-    - "deploy-cinema-aws.sh"
-    - "README.md"
-    - "buildspec.yml"
+    - aws-resources.json
+    - deploy-cinema-aws.sh
+    - README.md
+    - buildspec.yml
   discard-paths: no
 
 cache:
   paths:
-    - '/root/.docker/**/*'
+    - /root/.docker/**/*
