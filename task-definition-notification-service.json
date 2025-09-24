@@ -1,0 +1,54 @@
+{
+    "family": "notification-service",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::634733903398:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::634733903398:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "notification-service",
+            "image": "634733903398.dkr.ecr.eu-west-1.amazonaws.com/cinema-notification-service:latest",
+            "portMappings": [
+                {
+                    "containerPort": 3004,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "healthCheck": {
+                "command": [
+                "CMD-SHELL",
+                "wget --no-verbose --tries=1 --spider http://localhost:3004/ || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 10,
+                "retries": 3,
+                "startPeriod": 60
+            },
+            "environment": [
+                {
+                    "name": "MONGODB_ATLAS_URI",
+                    "value": "mongodb+srv://quaolo_db_user:SP8c5btN0AEL9HcP@cluster-cinema.gctahhz.mongodb.net/sample_mflix?retryWrites=true&w=majority&appName=Cluster-cinema"
+                },
+                {
+                    "name": "DB",
+                    "value": "notification_service"
+                },
+                {
+                    "name": "PORT",
+                    "value": "3004"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/notification-service",
+                    "awslogs-region": "eu-west-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ]
+}
