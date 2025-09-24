@@ -12,6 +12,7 @@
         "logs:*",
         "cloudwatch:*",
         "servicediscovery:*",
+        "application-autoscaling:*",
         "route53:*",
         "acm:*",
         "iam:PassRole",

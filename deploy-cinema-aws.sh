@@ -1163,6 +1163,30 @@ EOF
 
             if [ $? -eq 0 ]; then
                 print_success "Service $service updated successfully"
+                if [ "$service" = "movies-service" ]; then
+                    echo "  Configuring Application Auto Scaling for $service..."
+                    aws application-autoscaling register-scalable-target \
+                      --service-namespace ecs \
+                      --resource-id service/$CLUSTER_NAME/$service \
+                      --scalable-dimension ecs:service:DesiredCount \
+                      --min-capacity 2 \
+                      --max-capacity 6 \
+                      --region "$REGION" >/dev/null 2>&1 || true
+
+                    aws application-autoscaling put-scaling-policy \
+                      --service-namespace ecs \
+                      --resource-id service/$CLUSTER_NAME/$service \
+                      --scalable-dimension ecs:service:DesiredCount \
+                      --policy-name ${service}-cpu-target-tracking \
+                      --policy-type TargetTrackingScaling \
+                      --target-tracking-scaling-policy-configuration '{
+                        "TargetValue": 60.0,
+                        "PredefinedMetricSpecification": { "PredefinedMetricType": "ECSServiceAverageCPUUtilization" },
+                        "ScaleInCooldown": 60,
+                        "ScaleOutCooldown": 60
+                      }' \
+                      --region "$REGION" >/dev/null 2>&1 || true
+                fi
             else
                 print_error "Service update failed for $service"
             fi
@@ -1214,6 +1238,32 @@ EOF
         
         if [ $? -eq 0 ]; then
             print_success "Service $service deployed to ECS"
+            if [ "$service" = "movies-service" ]; then
+                echo "  Configuring Application Auto Scaling for $service..."
+                aws application-autoscaling register-scalable-target \
+                  --service-namespace ecs \
+                  --resource-id service/$CLUSTER_NAME/$service \
+                  --scalable-dimension ecs:service:DesiredCount \
+                  --min-capacity 2 \
+                  --max-capacity 6 \
+                  --region "$REGION" >/dev/null 2>&1 || true
+
+                aws application-autoscaling put-scaling-policy \
+                  --service-namespace ecs \
+                  --resource-id service/$CLUSTER_NAME/$service \
+                  --scalable-dimension ecs:service:DesiredCount \
+                  --policy-name ${service}-cpu-target-tracking \
+                  --policy-type TargetTrackingScaling \
+                  --target-tracking-scaling-policy-configuration '{
+                    "TargetValue": 60.0,
+                    "PredefinedMetricSpecification": { "PredefinedMetricType": "ECSServiceAverageCPUUtilization" },
+                    "ScaleInCooldown": 60,
+                    "ScaleOutCooldown": 60
+                  }' \
+                  --region "$REGION" >/dev/null 2>&1 || true
+
+                aws ecs update-service --cluster "$CLUSTER_NAME" --service "$service" --desired-count 2 --region "$REGION" >/dev/null 2>&1 || true
+            fi
         else
             print_error "Service deployment failed for $service"
             fi
