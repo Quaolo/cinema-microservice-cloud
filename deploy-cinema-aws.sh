@@ -1028,6 +1028,11 @@ EOF
 function deploy_ecs_services {
     print_header "DEPLOYING SERVICES TO ECS"
     
+    if [ -z "${MONGODB_ATLAS_URI:-}" ]; then
+        print_error "MONGODB_ATLAS_URI is not set. Export it before deploying."
+        return 1
+    fi
+
     if [ ! -f "aws-resources.json" ]; then
         print_error "aws-resources.json not found. Run infrastructure setup first."
         return 1
@@ -1087,7 +1092,7 @@ function deploy_ecs_services {
             "environment": [
                 {
                     "name": "MONGODB_ATLAS_URI",
-                    "value": "mongodb+srv://quaolo_db_user:SP8c5btN0AEL9HcP@cluster-cinema.gctahhz.mongodb.net/sample_mflix?retryWrites=true&w=majority&appName=Cluster-cinema"
+                    "value": "${MONGODB_ATLAS_URI}"
                 },
                 {
                     "name": "DB",

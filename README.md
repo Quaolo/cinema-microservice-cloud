@@ -79,19 +79,26 @@ git clone <repository-url>
 cd cinema-microservice
 ```
 
-### **2. Deploy Completo**
+### **2. Configurazione Variabili d'Ambiente**
+```bash
+cp .env.example .env
+# Compila .env con i tuoi valori, poi esportali nella shell
+set -a; source .env; set +a
+```
+
+### **3. Deploy Completo**
 ```bash
 # Deploy completo su AWS
 bash deploy-cinema-aws.sh
 ```
 
-### **3. Deploy Solo Servizi (infrastruttura esistente)**
+### **4. Deploy Solo Servizi (infrastruttura esistente)**
 ```bash
 # Skip creazione infrastruttura
 SKIP_INFRASTRUCTURE=true bash deploy-cinema-aws.sh
 ```
 
-### **4. Cleanup Risorse**
+### **5. Cleanup Risorse**
 ```bash
 # Rimuovi tutte le risorse AWS
 CLEANUP=true bash deploy-cinema-aws.sh
@@ -169,9 +176,8 @@ curl http://ALB-DNS/health
 - ALB per terminazione SSL/TLS
 
 ### **Secrets Management**
-- Credenziali MongoDB in variabili ambiente
-- Chiavi Stripe in variabili ambiente
-- Nessun secret hardcoded
+- Credenziali MongoDB e chiavi Stripe lette da variabili d'ambiente (vedi `.env.example`)
+- Nessun secret nei file del repository: i file `.env` sono esclusi da git
 
 ## Troubleshooting
 
@@ -217,7 +223,7 @@ aws ecs describe-services --cluster cinema-cluster --services service-name
 
 Per semplicità e scopi didattici, alcune configurazioni di sicurezza potrebbero non essere ottimali per un ambiente di produzione:
 
-- **Chiavi e credenziali**: Alcuni file di configurazione contengono chiavi in chiaro per facilitare il testing
+- **Chiavi e credenziali**: Nelle prime versioni alcune credenziali erano scritte in chiaro e restano nella cronologia git; l'ambiente AWS e MongoDB Atlas originale non è più attivo
 - **Secrets Management**: Non utilizza AWS Secrets Manager o sistemi di gestione segreti avanzati
 - **Network Security**: Configurazioni di rete semplificate per scopi dimostrativi
 - **IAM Policies**: Permessi potrebbero essere più permissivi del necessario

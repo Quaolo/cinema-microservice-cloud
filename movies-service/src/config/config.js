@@ -1,7 +1,7 @@
 const dbSettings = {
   db: process.env.DB || 'movies',
-  user: process.env.DB_USER || 'cristian',
-  pass: process.env.DB_PASS || 'cristianPassword2017',
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASS,
   repl: process.env.DB_REPLS || 'rs1',
   atlasUri: process.env.MONGODB_ATLAS_URI,
   servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.split(' ') : [
