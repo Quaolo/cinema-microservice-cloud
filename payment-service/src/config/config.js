@@ -1,7 +1,7 @@
 const dbSettings = {
   db: process.env.DB || 'payment',
-  user: process.env.DB_USER || 'cristian',
-  pass: process.env.DB_PASS || 'cristianPassword2017',
+  user: process.env.DB_USER,
+  pass: process.env.DB_PASS,
   repl: process.env.DB_REPLS || 'rs1',
   atlasUri: process.env.MONGODB_ATLAS_URI,
   servers: (process.env.DB_SERVERS) ? process.env.DB_SERVERS.substr(1, process.env.DB_SERVERS.length - 2).split(' ') : [
@@ -44,8 +44,8 @@ const serverSettings = {
 }
 
 const stripeSettings = {
-  secret: 'sk_test_lPPoJjmmbSjymtgo4r0O3z89',
-  public: 'pk_test_l10342hIODZmOJsBpY6GVPHj'
+  secret: process.env.STRIPE_SECRET_KEY,
+  public: process.env.STRIPE_PUBLIC_KEY
 }
 
 module.exports = Object.assign({}, { dbSettings, serverSettings, stripeSettings })

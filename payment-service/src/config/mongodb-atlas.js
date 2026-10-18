@@ -1,7 +1,7 @@
 // MongoDB Atlas Configuration
 const mongoose = require('mongoose');
 
-const MONGODB_ATLAS_URI = 'mongodb+srv://quaolo_db_user:SP8c5btN0AEL9HcP@cluster-cinema.gctahhz.mongodb.net/sample_mflix?retryWrites=true&w=majority&appName=Cluster-cinema';
+const MONGODB_ATLAS_URI = process.env.MONGODB_ATLAS_URI;
 
 // MongoDB Atlas connection options
 const mongoOptions = {
@@ -13,6 +13,10 @@ const mongoOptions = {
 
 // Connect to MongoDB Atlas
 async function connectToMongoDB() {
+    if (!MONGODB_ATLAS_URI) {
+        console.error('❌ MONGODB_ATLAS_URI is not set');
+        process.exit(1);
+    }
     try {
         await mongoose.connect(MONGODB_ATLAS_URI, mongoOptions);
         console.log('✅ Connected to MongoDB Atlas');
