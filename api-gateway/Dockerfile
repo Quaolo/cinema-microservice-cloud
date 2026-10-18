@@ -1,17 +1,17 @@
-FROM node:16-alpine
+FROM node:24-alpine
 
-ENV HOME=/home/nupp
+RUN apk add --no-cache dumb-init
 
-COPY package.json npm-shrinkwrap.json $HOME/app/
+WORKDIR /home/node/app
 
-COPY src/ $HOME/app/src
+COPY package.json package-lock.json ./
 
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.1.1/dumb-init_1.1.1_amd64 /usr/local/bin/dumb-init
+RUN npm ci --omit=dev --no-audit --no-fund && npm cache clean --force
 
-WORKDIR $HOME/app
+COPY src/ ./src
 
-RUN chmod +x /usr/local/bin/dumb-init && \
-    \
-    npm install --silent --progress=false --production
+USER node
 
-CMD ["dumb-init", "npm", "start"]
+EXPOSE 8080
+
+CMD ["dumb-init", "node", "src/index.js"]

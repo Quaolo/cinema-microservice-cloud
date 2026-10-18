@@ -1,7 +1,7 @@
 'use strict'
 const express = require('express')
 const { createProxyMiddleware } = require('http-proxy-middleware')
-const spdy = require('spdy')
+const https = require('https')
 
 const start = (container) => {
   return new Promise((resolve, reject) => {
@@ -104,9 +104,9 @@ const start = (container) => {
         resolve(server)
       })
     } else if (ssl && ssl.key && ssl.cert) {
-      // Use SPDY/HTTPS only if SSL certificates are available
+      // Use HTTPS only if SSL certificates are available
       console.log('Starting HTTPS server with SSL certificates')
-      const server = spdy.createServer(ssl, app)
+      const server = https.createServer(ssl, app)
         .listen(port, () => {
           console.log(`HTTPS server listening on port ${port}`)
           resolve(server)
