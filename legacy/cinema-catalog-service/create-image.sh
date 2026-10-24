@@ -8,4 +8,4 @@ docker image prune
 
 docker volume prune
 
-docker build -t cinema-catalog-service .
+docker build -t cinema-catalog-service ../../cinema-catalog-service

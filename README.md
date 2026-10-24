@@ -79,6 +79,8 @@ docker compose up --build        # MongoDB con dati di esempio + tutti i servizi
 bash local/smoke-test.sh         # verifica gli endpoint tramite il gateway (porta 8080)
 ```
 
+La configurazione originale con Docker Swarm è conservata in [`legacy/`](legacy/README.md).
+
 ### **1. Clone del Repository**
 ```bash
 git clone <repository-url>

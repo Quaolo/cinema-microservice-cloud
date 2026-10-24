@@ -14,9 +14,10 @@ Example of the **notification service** microservice and API.
 ### how to run it
 
 **This to run our microservice in a docker container**
-we need docker installed
+Legacy Docker Swarm setup (see `legacy/README.md`). For the current local setup use
+`docker compose up --build` from the repository root.
 ```
-$ bash < start-service.sh
+$ cd ../legacy/notification-service && bash start-service.sh
 ```
 
 **To run in locally**
