@@ -8,4 +8,4 @@ docker image prune
 
 docker volume prune
 
-docker build -t notification-service .
+docker build -t notification-service ../../notification-service

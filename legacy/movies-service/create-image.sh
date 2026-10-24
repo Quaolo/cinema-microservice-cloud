@@ -8,4 +8,4 @@ docker image prune
 
 docker volume prune
 
-docker build -t movies-service .
+docker build -t movies-service ../../movies-service

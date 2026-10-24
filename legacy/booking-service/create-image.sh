@@ -8,4 +8,4 @@ docker image prune
 
 docker volume prune
 
-docker build -t booking-service .
+docker build -t booking-service ../../booking-service
