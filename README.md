@@ -73,6 +73,12 @@ Questo progetto implementa un'architettura di microservizi completa per un siste
 - Node.js 16+
 - Account MongoDB Atlas
 
+### **Avvio in Locale (senza AWS)**
+```bash
+docker compose up --build        # MongoDB con dati di esempio + tutti i servizi
+bash local/smoke-test.sh         # verifica gli endpoint tramite il gateway (porta 8080)
+```
+
 ### **1. Clone del Repository**
 ```bash
 git clone <repository-url>

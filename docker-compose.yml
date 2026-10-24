@@ -1,0 +1,85 @@
+# Local stack: runs every service without AWS or MongoDB Atlas.
+# Usage: docker compose up --build   (gateway on http://localhost:8080)
+
+x-service-env: &service-env
+  MONGODB_ATLAS_URI: mongodb://mongo:27017/cinema
+
+services:
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_DATABASE: cinema
+    volumes:
+      - ./local/mongo-init:/docker-entrypoint-initdb.d:ro
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  movies-service:
+    build: ./movies-service
+    environment:
+      <<: *service-env
+      PORT: 3000
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  cinema-catalog-service:
+    build: ./cinema-catalog-service
+    environment:
+      <<: *service-env
+      PORT: 3001
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  payment-service:
+    build: ./payment-service
+    environment:
+      <<: *service-env
+      PORT: 3002
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  booking-service:
+    build: ./booking-service
+    environment:
+      <<: *service-env
+      PORT: 3003
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  notification-service:
+    build: ./notification-service
+    environment:
+      <<: *service-env
+      PORT: 3004
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  api-gateway:
+    build: ./api-gateway
+    environment:
+      PORT: 8080
+      MOVIES_SERVICE_URL: http://movies-service:3000
+      CINEMA_CATALOG_SERVICE_URL: http://cinema-catalog-service:3001
+      PAYMENT_SERVICE_URL: http://payment-service:3002
+      BOOKING_SERVICE_URL: http://booking-service:3003
+      NOTIFICATION_SERVICE_URL: http://notification-service:3004
+    ports:
+      - "8080:8080"
+    depends_on:
+      - movies-service
+      - cinema-catalog-service
+      - payment-service
+      - booking-service
+      - notification-service
+
+volumes:
+  mongo-data:
